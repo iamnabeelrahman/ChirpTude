@@ -1,17 +1,1 @@
-{
-  "name": "backend-webd",
-  "version": "1.0.0",
-  "description": "Learning backend with project",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "Learning",
-    "javascript",
-    "and",
-    "backend"
-  ],
-  "author": "Nabeel Rahman",
-  "license": "ISC"
-}
+
