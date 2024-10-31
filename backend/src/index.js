@@ -4,6 +4,11 @@ const dbConnect = require("./db");
 
 const app = express()
 
-dbConnect(); 
-
-app.listen(process.env.PORT)
+dbConnect()
+.then(() => {
+    app.listen(process.env.PORT || 3000, () => {
+        console.log(`Server is running in port ${process.env.PORT}`);
+        
+    })
+})
+.catch()
