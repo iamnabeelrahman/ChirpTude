@@ -3,6 +3,7 @@ const fs = require("fs");
 
 // Function to upload a local file to Cloudinary
 const uploadOnCloudinary = async (localFilePath) => {
+    
   // Configuration
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
