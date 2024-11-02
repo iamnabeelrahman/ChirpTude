@@ -3,7 +3,7 @@ const { DB_NAME } = require("../constants");
 require("dotenv").config(); 
 
 
-const dbConnect = (async () => {
+const dbConnect = async () => {
   try {
     const connectionInstance = await mongoose.connect(
       `${process.env.MONGODB_URI}/${DB_NAME}`
@@ -13,6 +13,6 @@ const dbConnect = (async () => {
   } catch (error) {
     console.error(" MongoDB connection Error: ", error);
   }
-});
+};
 
 module.exports = dbConnect; 
