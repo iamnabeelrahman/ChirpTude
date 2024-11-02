@@ -15,6 +15,12 @@ const userRoutes = require("./routes/user.routes.js");
 
 
 //routes declaration
+app.get('/', (req, res) => {
+    res.json({
+        msg: "web is on!"
+    })
+})
+
 app.use('/api/v1/users', userRoutes); //https//:localhost:300/api/v1/users ( here v is version of our api currently its 1 so, v1)
 
 module.exports = { app };
