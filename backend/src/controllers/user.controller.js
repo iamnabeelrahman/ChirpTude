@@ -1,5 +1,6 @@
 const { registerSchema } = require("../models/zod.models");
-const { User } = require("../models/user.model");
+const { User } = require("../models/user.model.js");
+const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
 //register api
 const registerUser = async (req, res) => {
@@ -47,6 +48,12 @@ const registerUser = async (req, res) => {
 
   const avatarLocalFile = req.files?.avatar[0]?.path;
   const coverImageLocalFile = req.files?.coverImage[0]?.path;
+
+  if (!avatarLocalFile) {
+    return res.status(400).json({
+      message: "avatar is required",
+    });
+  }
 
   // creating new User
   const newUser = await User.create(body);
