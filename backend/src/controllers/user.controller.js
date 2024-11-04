@@ -104,7 +104,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const body = req.body;
 
-  if (!body.username || !body.email) {
+  if (!(body.username || body.email)) {
     return res.status(422).json({
       message: "username or email is required",
     });
@@ -112,7 +112,7 @@ const loginUser = async (req, res) => {
 
   const checkUserExistence = await User.findOne({
     $or: [{ username: body.username }, { email: body.email }],
-  });
+});
 
   if (!checkUserExistence) {
     return res.status(400).json({
@@ -161,7 +161,7 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
   try {
     const userId = req.user._id
-    const user = await findById(userId)
+    const user = await User.findById(userId)
   
     if (!user) {
       return res.status(404).json({

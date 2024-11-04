@@ -8,7 +8,7 @@ const verifyJwt = async (req, res, next) => {
       req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      res.status(400).json({
+     return res.status(401).json({
         message: "unauthorized request",
       });
     }
@@ -18,20 +18,22 @@ const verifyJwt = async (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET
     );
 
-    const userDetails = await User.findByID(decodedToken?._id).select(
+    const userDetails = await User.findById(decodedToken?._id).select(
       "-password -refreshToken"
     );
 
     if (!userDetails) {
-      res.status(401).json({
+     return res.status(401).json({
         message: "Invalid access token",
       });
     }
+    console.log(userDetails._id);
+    
 
     req.user = userDetails;
     next();
   } catch (error) {
-    res.status(401).json({
+  return  res.status(401).json({
       message: "Invalid access token",
     });
   }

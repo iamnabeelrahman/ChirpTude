@@ -11,25 +11,15 @@ const router = Router();
 
 // register route
 router.route("/register").post(
-  upload.fields([
-    {
-      name: "avatar",
-      maxCount: 1,
-    },
-    {
-      name: "coverImage",
-      maxCount: 1,
-    },
-  ]),
+  upload,
   registerUser
 );
 
 // login route
 router.route("/login").post(loginUser);
 
-//logout route
-router.route("/logout").delete(verifyJwt, logoutUser) 
-
+// logout route
+router.route("/logout").delete(verifyJwt, logoutUser);
 
 // exporting router
 module.exports = router;
