@@ -70,7 +70,6 @@ const registerUser = async (req, res) => {
     });
   }
 
-  //destructuring email and username to convert them to lowercase
   const { email, username, ...otherDetails } = body;
 
   // creating new User
