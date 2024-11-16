@@ -1,8 +1,9 @@
 const { registerSchema } = require("../models/zod.models.js");
 const { User } = require("../models/user.model.js");
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
+const jwt = require("jsonwebtoken");
 
-//register api
+//register controller
 const registerUser = async (req, res) => {
   // getting details from frontend
   const body = req.body;
@@ -86,7 +87,7 @@ const registerUser = async (req, res) => {
   );
 
   if (!checkCreatedUser) {
-   return res.status(500).json({
+    return res.status(500).json({
       message: "Something went wrong while registering user",
     });
   }
@@ -99,7 +100,7 @@ const registerUser = async (req, res) => {
   });
 };
 
-//login api
+//login controller
 const loginUser = async (req, res) => {
   const body = req.body;
 
@@ -111,7 +112,7 @@ const loginUser = async (req, res) => {
 
   const checkUserExistence = await User.findOne({
     $or: [{ username: body.username }, { email: body.email }],
-});
+  });
 
   if (!checkUserExistence) {
     return res.status(400).json({
@@ -155,44 +156,105 @@ const loginUser = async (req, res) => {
       accessToken: accessToken,
       refreshToken: refreshToken,
     });
-};
-
+}; 
+// log out controller
 const logoutUser = async (req, res) => {
   try {
-    const userId = req.user._id
-    const user = await User.findById(userId)
-  
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).json({
-        message: "User not found"
-      })    
+        message: "User not found",
+      });
     }
-  
-    user.refreshToken =null
-    await user.save({validateBeforeSave: false})
-  
+
+    user.refreshToken = null;
+    await user.save({ validateBeforeSave: false });
+
     const options = {
       httpOnly: true,
       secure: true,
     };
 
-    res.clearCookie("accessToken", options)
-    res.clearCookie("refreshToken", options)
-  
+    res.clearCookie("accessToken", options);
+    res.clearCookie("refreshToken", options);
+
     return res.status(200).json({
-      message: "Logged out successfully"
-    })
+      message: "Logged out successfully",
+    });
   } catch (error) {
     console.log("Logged out errro: ", error);
     res.status(500).json({
-      message: "An arror occurred while logging out"
-    })
-    
+      message: "An arror occurred while logging out",
+    });
+  }
+};
+
+
+// new access token controller
+const refreshAccessToken = async (req, res) => {
+  const incomingUserToken = req.cookies.refreshToken || req.body.refreshToken;
+
+  if (!incomingUserToken) {
+    return res.status(401).json({
+      message: "Unauthorized request. Refresh token is missing.",
+    });
   }
 
+  try {
+    // Verify the refresh token
+    const decodedToken = await jwt.verify(
+      incomingUserToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    // Find the user associated with the token
+    const userDetails = await User.findById(decodedToken?._id).select(
+      "-password -refreshToken"
+    );
+
+    if (!userDetails) {
+      return res.status(401).json({
+        message: "Invalid refresh token",
+      });
+    }
+
+    // Generate a new access token
+    const accessToken = await userDetails.generateAccessToken();
+    const newRrefreshToken = await userDetails.generateRefreshToken();
+
+    userDetails.refreshToken = newRrefreshToken
+    await userDetails.save({ validateBeforeSave: false });
+
+    // Set cookie options
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refresh token", newRrefreshToken, options).json({
+      message: "new access token set sucessfully",
+      success: true,
+      accessToken,
+      refreshToken: newRrefreshToken
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(401).json({
+      message: "Invalid or expired refresh token.",
+    });
+  }
 };
+
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
+  refreshAccessToken
 };

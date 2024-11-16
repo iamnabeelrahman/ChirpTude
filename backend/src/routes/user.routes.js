@@ -3,23 +3,24 @@ const {
   registerUser,
   loginUser,
   logoutUser,
+  refreshAccessToken,
 } = require("../controllers/user.controller.js");
 const { upload } = require("../middlewares/multer.middleware.js");
 const { verifyJwt } = require("../controllers/auth.middleware.js");
 
 const router = Router();
 
-// register route
+// register API
 router.route("/register").post(
   upload,
   registerUser
 );
 
-// login route
-router.route("/login").post(loginUser);
+router.route("/login").post(loginUser); // login API
 
-// logout route
-router.route("/logout").delete(verifyJwt, logoutUser);
+router.route("/logout").delete(verifyJwt, logoutUser);// logout API
 
-// exporting router
-module.exports = router;
+
+// secured routes
+router.route('/new-token').post(refreshAccessToken)  //new token api
+module.exports = router; // exporting router
