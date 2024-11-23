@@ -39,7 +39,7 @@ A unique platform that combines the power of YouTube and Twitter, enabling users
    
 2.  Navigate to the project directory:
     ```bash
-   cd ChirpTude
+    cd ChirpTude
 
 3.  Install dependencies:
      ```bash
