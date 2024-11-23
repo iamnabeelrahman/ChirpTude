@@ -6,7 +6,7 @@ const {
   refreshAccessToken,
 } = require("../controllers/user.controller.js");
 const { upload } = require("../middlewares/multer.middleware.js");
-const { verifyJwt } = require("../controllers/auth.middleware.js");
+const { verifyJwt } = require("../middlewares/auth.middleware.js");
 
 const router = Router();
 
