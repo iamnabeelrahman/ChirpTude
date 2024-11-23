@@ -96,7 +96,7 @@ const registerUser = async (req, res) => {
   res.status(201).json({
     success: true,
     message: "user registered successfully",
-    user: checkCreatedUser,
+    data: checkCreatedUser,
   });
 };
 
@@ -222,9 +222,9 @@ const refreshAccessToken = async (req, res) => {
 
     // Generate a new access token
     const accessToken = await userDetails.generateAccessToken();
-    const newRrefreshToken = await userDetails.generateRefreshToken();
+    const newRefreshToken = await userDetails.generateRefreshToken();
 
-    userDetails.refreshToken = newRrefreshToken
+    userDetails.refreshToken = newRefreshToken
     await userDetails.save({ validateBeforeSave: false });
 
     // Set cookie options
@@ -236,11 +236,11 @@ const refreshAccessToken = async (req, res) => {
     return res
     .status(200)
     .cookie("accessToken", accessToken, options)
-    .cookie("refresh token", newRrefreshToken, options).json({
+    .cookie("refreshToken", newRefreshToken, options).json({
       message: "new access token set sucessfully",
       success: true,
       accessToken,
-      refreshToken: newRrefreshToken
+      refreshToken: newRefreshToken
     });
 
   } catch (error) {

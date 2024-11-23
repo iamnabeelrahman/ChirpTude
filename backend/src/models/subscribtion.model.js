@@ -2,13 +2,13 @@ const  mongoose = require("mongoose");
 
 const subscriptionSchema = mongoose.Schema(
     {
-        // the one who is subscribing
+        // the channel which is being subscribed
         channel: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },],
-
-        // the channel which is being subscribed
+        
+        // the one who is subscribing
         subscriber: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"

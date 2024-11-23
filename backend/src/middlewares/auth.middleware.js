@@ -29,9 +29,9 @@ const verifyJwt = async (req, res, next) => {
     }
     console.log(userDetails._id);
     
-
     req.user = userDetails;
     next();
+
   } catch (error) {
   return  res.status(401).json({
       message: "Invalid access token",
