@@ -1,0 +1,51 @@
+/* Add this CSS to style the form */
+.register-form {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.register-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.register-form div {
+  margin-bottom: 15px;
+}
+
+.register-form label {
+  display: block;
+  font-weight: bold;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.register-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-form button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
